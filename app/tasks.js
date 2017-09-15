@@ -6,16 +6,10 @@ const add = require('./commands/add.js').add;
 const complete = require('./commands/complete.js').complete;
 const deleted = require('./commands/delete.js').deleted;
 const list = require('./commands/list.js').list;
-const args = process.argv.slice(2);
-const firstArgument = args[0];
+const firstArgument = process.argv.slice(2)[0];
 const taskString = process.argv.slice(3).join(' ');
 
 const jsonPath = path.resolve(__dirname, './tasks.json');
-
-const header = () => {
-  process.stdout.write('ID Description\n');
-  process.stdout.write('-- -------------\n');
-};
 
 //checks if specific file exist/ if not make file
 fs.stat(jsonPath, (err) => {
@@ -33,7 +27,6 @@ fs.stat(jsonPath, (err) => {
         deleted(taskString, jsonPath);
         break;
       case 'list':
-        header();
         list(jsonPath);
         break;
       default:
