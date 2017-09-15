@@ -9,8 +9,14 @@ const filter = (arrayOfTasks) => {
 };
 
 const readAndParseData = (jsonPath) => {
-  const fileContents = fs.readFileSync(jsonPath, 'utf8');
-  return JSON.parse(fileContents);
+  let fileContents
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    if(err){
+      throw err
+    }
+    data = fileContents
+    return JSON.parse(fileContents);
+  });
 };
 
 const writeToFile = (arrayOfTasksObjects, jsonPath) => {

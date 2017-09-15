@@ -2,19 +2,30 @@
 const fs = require('fs');
 const path = require('path');
 
-const writingToJsonFile = (modifiedTasksObject, filePath) => {
+const writingToJsonFile = (modifiedTasksObject) => {
   const stringObject = JSON.stringify(modifiedTasksObject);
-  fs.writeFileSync(filePath, stringObject);
-  if(filePath === path.resolve(__dirname, '../tasks.json')){
-    process.stdout.write(`Created task ${modifiedTasksObject.tasks.length}\n`);
-  }
-  return stringObject;
+  fs.writeFile(filePath, stringObject, (err) => {
+    if(err) throw err
+    return stringObject;
+  });
 };
 
 const readAndParseData = (jsonPath) => {
-  const fileContents = fs.readFileSync(jsonPath, 'utf8');
-  return JSON.parse(fileContents);
+  let fileContents
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    if(err){
+      throw err
+    }
+    data = fileContents
+    return JSON.parse(fileContents);
+  });
 };
+
+const writeToTerminal = (filePath, modifiedTasksObject) => {
+  if(filePath === path.resolve(__dirname, '../tasks.json')){
+    process.stdout.write(`Created task ${modifiedTasksObject.tasks.length}\n`);
+  }
+}
 
 const turnIntoObject = (taskString, taskNumber) => {
   const taskObject = {id: taskNumber, description: taskString, incomplete: true};
@@ -34,6 +45,7 @@ exports.add = (taskString, filePath) => {
     const newTaskObject = turnIntoObject(taskString, taskNumber);
     //hold object and then push new array into tasks array
     const modifiedTasksObject = pushNewObjectToTasksArray(newTaskObject, tasksObject);
+    writeToTerminal(filePath, modifiedTasksObject)
     //stringify tasks then write to jsonFile with new array added
     const stringTasksObject = writingToJsonFile(modifiedTasksObject, filePath);
     return stringTasksObject;

@@ -3,12 +3,21 @@ const fs = require('fs');
 const path = require('path');
 
 const readFileAndParse = (filePath) => {
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(fileContents);
+  let fileContents
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    if(err){
+      throw err
+    }
+    data = fileContents
+    return JSON.parse(fileContents);
+  });
 };
 
 const writeToFile = (filePath, objectTasksString) => {
-  fs.writeFileSync(filePath, objectTasksString);
+  fs.writeFile(filePath, objectTasksString, (err) => {
+    if(err) throw err
+    return objectTasksString;
+  });
 };
 
 const printToTerminal = (filePath, stringValue) => {

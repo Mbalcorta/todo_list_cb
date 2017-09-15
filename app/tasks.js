@@ -41,7 +41,4 @@ fs.stat(jsonPath, (err) => {
     }
   });
 
-
-
-
 module.exports = {add, complete, deleted, list, jsonPath, path}
