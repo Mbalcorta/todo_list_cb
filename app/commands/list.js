@@ -29,6 +29,8 @@ const writeToFile = (arrayOfTasksObjects, jsonPath) => {
 
   stringValue += `\nYou have ${arrayOfTasksObjects.length} ${taskVariable}\n`;
     if(jsonPath === path.resolve(__dirname, '../tasks.json')){
+      process.stdout.write('ID Description\n');
+      process.stdout.write('-- -------------\n');
       process.stdout.write(stringValue);
   }
    return stringValue;
