@@ -14,8 +14,8 @@ const readAndParseData = (jsonPath) => {
     if(err){
       throw err
     }
-    data = fileContents
-    return JSON.parse(fileContents);
+    runAfterRead(JSON.parse(data), jsonPath)
+    return JSON.parse(data);
   });
 };
 
@@ -33,8 +33,8 @@ const writeToFile = (arrayOfTasksObjects, jsonPath) => {
   }
    return stringValue;
 };
-const runAfterRead = () => {
-  const arrayOfIncompleteTasks = filter(jsonTasks.tasks);
+const runAfterRead = (data, jsonPath) => {
+  const arrayOfIncompleteTasks = filter(data.tasks);
   const tasksList = writeToFile(arrayOfIncompleteTasks, jsonPath);
   return tasksList;
 }
