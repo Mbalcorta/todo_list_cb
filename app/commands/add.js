@@ -49,7 +49,7 @@ const runAfterRead = (tasksObject, filePath, taskString) => {
 
 exports.add = (taskString, filePath) => {
   if(taskString){
-     readAndParseData(filePath, taskString);
+     return readAndParseData(filePath, taskString);
   } else {
     //eventually make a test to catch an error when no string entered
     return 'Error: must enter task';
