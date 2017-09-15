@@ -38,11 +38,6 @@ const ChangeIncompleteStatus = (arrayOfObjects, taskNumber, filePath) => {
     }
 };
 
-//complete will change incomplete status if false;
-exports.complete = (taskNumber, filePath) => {
-  readFileAndParse(filePath, taskNumber);
-};
-
 const runAfterRead = (filePath, data, taskNumber) => {
   const arrayOfTaskObjects = data.tasks;
   const stringReturnValue = ChangeIncompleteStatus(arrayOfTaskObjects, (Number(taskNumber)-1), filePath);
@@ -51,3 +46,8 @@ const runAfterRead = (filePath, data, taskNumber) => {
   writeToFile(filePath, objectTasksString);
   return stringReturnValue;
 }
+//complete will change incomplete status if false;
+exports.complete = (taskNumber, filePath) => {
+  readFileAndParse(filePath, taskNumber);
+};
+

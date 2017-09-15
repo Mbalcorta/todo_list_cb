@@ -33,10 +33,12 @@ const writeToFile = (arrayOfTasksObjects, jsonPath) => {
   }
    return stringValue;
 };
-
+const runAfterRead = () => {
+  const arrayOfIncompleteTasks = filter(jsonTasks.tasks);
+  const tasksList = writeToFile(arrayOfIncompleteTasks, jsonPath);
+  return tasksList;
+}
 exports.list = (jsonPath) => {
-    const jsonTasks = readAndParseData(jsonPath);
-    const arrayOfIncompleteTasks = filter(jsonTasks.tasks);
-    const tasksList = writeToFile(arrayOfIncompleteTasks, jsonPath);
-    return tasksList;
+    readAndParseData(jsonPath);
 };
+

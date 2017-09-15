@@ -36,16 +36,6 @@ const pushNewObjectToTasksArray = (newTaskObject, allTasksObject) => {
   return allTasksObject;
 };
 
-exports.add = (taskString, filePath) => {
-  if(taskString){
-     readAndParseData(filePath, taskString);
-  } else {
-    //eventually make a test to catch an error when no string entered
-    return 'Error: must enter task';
-  }
-};
-
-
 const runAfterRead = (tasksObject, filePath, taskString) => {
   let taskNumber =  tasksObject.tasks.length+1;
   //turn string into object;
@@ -56,3 +46,14 @@ const runAfterRead = (tasksObject, filePath, taskString) => {
   //stringify tasks then write to jsonFile with new array added
   writingToJsonFile(modifiedTasksObject, filePath);
 }
+
+exports.add = (taskString, filePath) => {
+  if(taskString){
+     readAndParseData(filePath, taskString);
+  } else {
+    //eventually make a test to catch an error when no string entered
+    return 'Error: must enter task';
+  }
+};
+
+
