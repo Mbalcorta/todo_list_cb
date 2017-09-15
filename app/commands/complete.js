@@ -2,14 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const readFileAndParse = (filePath) => {
-  let fileContents
+const readFileAndParse = (jsonPath, taskNumber) => {
   fs.readFile(jsonPath, 'utf8', (err, data) => {
     if(err){
       throw err
     }
-    data = fileContents
-    return JSON.parse(fileContents);
+    runAfterRead(jsonPath, JSON.parse(data), taskNumber)
+    return JSON.parse(data);
   });
 };
 
@@ -41,11 +40,14 @@ const ChangeIncompleteStatus = (arrayOfObjects, taskNumber, filePath) => {
 
 //complete will change incomplete status if false;
 exports.complete = (taskNumber, filePath) => {
-  const objectTasks = readFileAndParse(filePath);
-  const arrayOfTaskObjects = objectTasks.tasks;
+  readFileAndParse(filePath, taskNumber);
+};
+
+const runAfterRead = (filePath, data, taskNumber) => {
+  const arrayOfTaskObjects = data.tasks;
   const stringReturnValue = ChangeIncompleteStatus(arrayOfTaskObjects, (Number(taskNumber)-1), filePath);
-  const objectTasksString = JSON.stringify(objectTasks);
+  const objectTasksString = JSON.stringify(data);
   printToTerminal(filePath, stringReturnValue);
   writeToFile(filePath, objectTasksString);
   return stringReturnValue;
-};
+}
