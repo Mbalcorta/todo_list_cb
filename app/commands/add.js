@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const writingToJsonFile = (modifiedTasksObject) => {
+const writingToJsonFile = ( modifiedTasksObject, filePath) => {
   const stringObject = JSON.stringify(modifiedTasksObject);
   fs.writeFile(filePath, stringObject, (err) => {
     if(err) throw err
@@ -10,14 +10,13 @@ const writingToJsonFile = (modifiedTasksObject) => {
   });
 };
 
-const readAndParseData = (jsonPath) => {
-  let fileContents
+const readAndParseData = (jsonPath, taskString) => {
   fs.readFile(jsonPath, 'utf8', (err, data) => {
     if(err){
       throw err
     }
-    data = fileContents
-    return JSON.parse(fileContents);
+    runAfterRead(JSON.parse(data), jsonPath, taskString)
+    return JSON.parse(data);
   });
 };
 
@@ -39,18 +38,21 @@ const pushNewObjectToTasksArray = (newTaskObject, allTasksObject) => {
 
 exports.add = (taskString, filePath) => {
   if(taskString){
-    const tasksObject = readAndParseData(filePath);
-    const taskNumber =  tasksObject.tasks.length+1;
-    //turn string into object;
-    const newTaskObject = turnIntoObject(taskString, taskNumber);
-    //hold object and then push new array into tasks array
-    const modifiedTasksObject = pushNewObjectToTasksArray(newTaskObject, tasksObject);
-    writeToTerminal(filePath, modifiedTasksObject)
-    //stringify tasks then write to jsonFile with new array added
-    const stringTasksObject = writingToJsonFile(modifiedTasksObject, filePath);
-    return stringTasksObject;
+     readAndParseData(filePath, taskString);
   } else {
     //eventually make a test to catch an error when no string entered
     return 'Error: must enter task';
   }
 };
+
+
+const runAfterRead = (tasksObject, filePath, taskString) => {
+  let taskNumber =  tasksObject.tasks.length+1;
+  //turn string into object;
+  let newTaskObject = turnIntoObject(taskString, taskNumber);
+  //hold object and then push new array into tasks array
+  let modifiedTasksObject = pushNewObjectToTasksArray(newTaskObject, tasksObject);
+  writeToTerminal(filePath, modifiedTasksObject)
+  //stringify tasks then write to jsonFile with new array added
+  writingToJsonFile(modifiedTasksObject, filePath);
+}
