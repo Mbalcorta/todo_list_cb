@@ -8,7 +8,6 @@ const deleted = require('./commands/delete.js').deleted;
 const list = require('./commands/list.js').list;
 const firstArgument = process.argv.slice(2)[0];
 const taskString = process.argv.slice(3).join(' ');
-
 const jsonPath = path.resolve(__dirname, './tasks.json');
 
 //checks if specific file exist/ if not make file
@@ -18,10 +17,18 @@ fs.stat(jsonPath, (err) => {
     }
     switch(firstArgument){
       case 'add':
+        try {
           add(taskString, jsonPath);
+        } catch(e){
+            process.stderr.write(e.message)
+        }
         break;
       case 'complete':
-        complete(taskString, jsonPath);
+        try{
+          complete(taskString, jsonPath);
+        } catch(e){
+          process.stderr.write(e.message)
+        }
         break;
       case 'delete':
         deleted(taskString, jsonPath);
