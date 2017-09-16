@@ -11,10 +11,10 @@ const ChangeIncompleteStatus = (jsonData, filePath, taskNumber) => {
     if(jsonData.tasks[taskNumberIndex] && jsonData.tasks[taskNumberIndex].incomplete){
         jsonData.tasks[taskNumberIndex].incomplete = false;
         writingToJsonFile(jsonData ,filePath)
-        process.stdout.write(`Completed tasks ${taskId}: '${taskTitle}'\n`);
+        process.stdout.write(`Completed task ${taskId}: '${taskTitle}'\n`);
       } else {
         if(filePath === path.resolve(__dirname, '../tasks.json')){
-          process.stdout.write(`Tasks ${taskId}: "${taskTitle}" already completed\n`);
+          process.stdout.write(`Task ${taskId}: "${taskTitle}" already completed\n`);
           }
       }
 };
