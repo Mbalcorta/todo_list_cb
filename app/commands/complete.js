@@ -18,10 +18,13 @@ exports.complete = (taskNumber, filePath, callback) => {
             callback(err, terminalString)
           })
         } else {
-          if(filePath === path.resolve(__dirname, '../tasks.json')){
+          if(filePath === path.resolve(__dirname, '../tasks.json') && data.tasks.lenght > 0){
             terminalString += `Task ${data.tasks[Number(taskNumber)-1].id}: "${data.tasks[Number(taskNumber)-1].description}" already completed\n`
             process.stdout.write(`Task ${data.tasks[Number(taskNumber)-1].id}: "${data.tasks[Number(taskNumber)-1].description}" already completed\n`);
-            }
+          } else {
+            terminalString += 'You have 0 tasks\n'
+
+          }
             callback(err, terminalString)
         }
     });
