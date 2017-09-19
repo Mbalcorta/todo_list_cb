@@ -18,31 +18,38 @@ describe('Add:',function(){
      });
 
     it('should contain json element', function(done) {
-        fs.readFile(jsonTestFile, 'utf8', (err, data) => {
-             if(err){
-               return err;
-               }
-               assert.equal(data ,'{"tasks":[{"id":1,"description":"Buy Milk","incomplete":true}]}');
-              done()
-            });
+      fs.readFile(jsonTestFile, 'utf8', (err, data) => {
+           if(err){
+             return err;
+             }
+             assert.equal(data ,'{"tasks":[{"id":1,"description":"Buy Milk","incomplete":true}]}');
+            done()
+          });
       });
   });
 
-  // describe('When four tasks are added', ()=> {
-  //   let jsonObject;
-  //   before(()=>{
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}')
-  //     add('Buy Eggs', jsonTestFile);
-  //     add('Buy Milk', jsonTestFile);
-  //     add('Walk dogs', jsonTestFile);
-  //     add('Read to baby', jsonTestFile);
-  //     const fileContent = fs.readFileSync(jsonTestFile, 'utf8')
-  //     jsonObject = JSON.parse(fileContent);
-  //   });
-  //   it('should contain Walk dogs task as an object at the second index', () => {
-  //     assert.equal(jsonObject.tasks[2].description, 'Walk dogs');
-  //   });
-  // })
+  describe('When four tasks are added', ()=> {
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        add('Buy Eggs', jsonTestFile, function(){
+          add('Buy Milk', jsonTestFile, function(){
+            add('Walk dogs', jsonTestFile, function(){
+              add('Read to baby', jsonTestFile, function(){
+                done()
+              });
+            });
+          });
+        });
+      })
+    });
+    it('should contain Walk dogs task as an object at the second index', function(done){
+      fs.readFile(jsonTestFile, 'utf8', (err, data) => {
+         assert.equal(JSON.parse(data).tasks[2].description, 'Walk dogs');
+        done()
+        })
+    });
+  })
   // describe('When one task is added when passed as argument', ()=> {
   //    let fileContent;
   //   before(()=>{
