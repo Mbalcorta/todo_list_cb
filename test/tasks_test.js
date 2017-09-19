@@ -179,31 +179,41 @@ describe('list:',() => {
     });
   })
 });
-//
-// describe('Tasks completed: ',() => {
-//   describe('When task marked as completed', () => {
-//     before(()=>{
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//       add('Buy Milk', jsonTestFile);
-//       add('Go for a walk', jsonTestFile);
-//       add('Build a fence', jsonTestFile);
-//     });
-//
-//     it("will print, Completed tasks 1: 'Buy Milk'", () => {
-//       assert.equal(complete(1, jsonTestFile), 'Completed tasks 1: \'Buy Milk\'\n');
-//     });
-//   })
-//
-//   describe('When no tasks available', () => {
-//     before(()=>{
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//     });
-//
-//     it("will print You have 0 tasks when no tasks available ", () => {
-//       assert.equal(complete(1, jsonTestFile), 'You have 0 tasks\n');
-//     });
-//   })
-// });
+
+describe('Tasks completed: ',function(){
+  describe('When task marked as completed', function(){
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+          add('Buy Milk', jsonTestFile, function(){
+            add('Go for a walk', jsonTestFile, function(){
+              add('Build a fence', jsonTestFile, function(){
+                done()
+              });
+            });
+          });
+        });
+      });
+
+    it("will print, Completed tasks 1: 'Buy Milk'", function(done){
+      complete(1, jsonTestFile, function(err, data){
+        if(err) throw err
+        assert.equal(data, 'Completed task 1: \'Buy Milk\'\n');
+        done()
+      });
+    });
+  });
+
+  // describe('When no tasks available', () => {
+  //   before(()=>{
+  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
+  //   });
+  //
+  //   it("will print You have 0 tasks when no tasks available ", () => {
+  //     assert.equal(complete(1, jsonTestFile), 'You have 0 tasks\n');
+  //   });
+  // })
+});
 //
 //
 // describe('Tasks deleted: ',() => {
