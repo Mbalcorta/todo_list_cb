@@ -67,19 +67,26 @@ describe('Add:',function(){
         })
     });
   });
-  // describe('When two tasks added terminal', ()=> {
-  //    let jsonObject;
-  //   before(()=>{
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}')
-  //     add('Buy eggs', jsonTestFile);
-  //     add('Buy milk', jsonTestFile);
-  //     const fileContent = fs.readFileSync(jsonTestFile, 'utf8');
-  //     jsonObject = JSON.parse(fileContent);
-  //   });
-  //   it('Third element to be accessed will be undefined', () => {
-  //      assert.equal(jsonObject.tasks[3], undefined);
-  //   });
-  // })
+  describe('When two tasks added terminal', function(){
+    before((done)=>{
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        add('Buy eggs', jsonTestFile, function(){
+          add('Buy milk', jsonTestFile, function(){
+            done()
+          });
+        });
+      });
+
+    });
+    it('Third element to be accessed will be undefined', (done) => {
+      fs.readFile(jsonTestFile, 'utf8', function(err, data){
+        if(err) throw err
+        assert.equal(JSON.parse(data).tasks[3], undefined);
+        done()
+      });
+    });
+  });
 });
 
 // describe('list:',() => {
