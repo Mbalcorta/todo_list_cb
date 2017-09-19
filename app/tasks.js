@@ -25,7 +25,7 @@ fs.stat(jsonPath, (err) => {
         break;
       case 'complete':
         try{
-          complete(taskString, jsonPath);
+          complete(taskString, jsonPath, function(){});
         } catch(e){
           process.stderr.write(e.message)
         }
