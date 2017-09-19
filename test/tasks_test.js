@@ -106,27 +106,32 @@ describe('list:',() => {
       });
     });
     //checking before and after of print txt file
-    it('should print "You have 0 tasks" if no task', (done) => {
+    it('should print "You have 0 tasks" if no task', function(done){
       list(jsonTestFile, function(err, data){
         assert.equal(data, '\nYou have 0 tasks\n');
         done()
       })
-
     });
   });
 
+  describe('should print out list of incomplete task to console if one item added', function(err){
+    before((done)=> {
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        add('Buy Milk', jsonTestFile, function(){
+          done()
+        });
+      });
+    });
 
-  // describe('should print out list of incomplete task to console if one item added', () => {
-  //   before(()=> {
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-  //      add('Buy Milk', jsonTestFile);
-  //   });
-  //
-  //   //checking before and after of print txt file
-  //   it('If one task is added should return list of task id and description', () => {
-  //        assert.equal(list(jsonTestFile), '1 Buy Milk\n\nYou have 1 task\n');
-  //     });
-  // });
+    //checking before and after of print txt file
+    it('If one task is added should return list of task id and description', function(done){
+        list(jsonTestFile, function(err, data){
+          assert.equal(data, '1 Buy Milk\n\nYou have 1 task\n');
+          done()
+        });
+      });
+  });
   //
   // describe('should print out list of incomplete tasks to console if many items added', () => {
   //   before(()=> {
