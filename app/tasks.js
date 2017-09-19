@@ -18,7 +18,9 @@ fs.stat(jsonPath, (err) => {
     switch(firstArgument){
       case 'add':
         try {
-          add(taskString, jsonPath);
+          add(taskString, jsonPath, function(){
+
+          });
         } catch(e){
             process.stderr.write(e.message)
         }
@@ -31,7 +33,11 @@ fs.stat(jsonPath, (err) => {
         }
         break;
       case 'delete':
-        deleted(taskString, jsonPath);
+        try {
+          deleted(taskString, jsonPath);
+        } catch(e){
+          process.stderr.write(e.message)
+        }
         break;
       case 'list':
         list(jsonPath);
