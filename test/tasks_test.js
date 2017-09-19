@@ -204,15 +204,22 @@ describe('Tasks completed: ',function(){
     });
   });
 
-  // describe('When no tasks available', () => {
-  //   before(()=>{
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-  //   });
-  //
-  //   it("will print You have 0 tasks when no tasks available ", () => {
-  //     assert.equal(complete(1, jsonTestFile), 'You have 0 tasks\n');
-  //   });
-  // })
+  describe('When no tasks available', function(){
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        done()
+      });
+    });
+
+    it("will print You have 0 tasks when no tasks available ", function(done){
+      complete(1, jsonTestFile, function(err, data){
+        if(err) throw err
+        assert.equal(data, 'You have 0 tasks\n');
+        done()
+      });
+    });
+  });
 });
 //
 //
