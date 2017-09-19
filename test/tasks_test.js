@@ -135,7 +135,8 @@ describe('list:',() => {
 
   describe('should print out list of incomplete tasks to console if many items added', function(){
     before((done)=> {
-      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
         add('Buy Milk', jsonTestFile, function(){
           add('Take dogs on walk', jsonTestFile, function(){
             add('Go for a bike ride', jsonTestFile, function(){
@@ -150,24 +151,33 @@ describe('list:',() => {
     //checking before and after of print txt file
     it('If multiple tasks it should print to terminal list of id and description', function(done){
       list(jsonTestFile, function(err, data){
+        if(err) throw err
         assert.equal(data, '1 Buy Milk\n2 Take dogs on walk\n3 Go for a bike ride\n4 Take baby to beach\n\nYou have 4 tasks\n');
         done()
         })
       });
-  });
-  //
-  // describe('If one task is incomplete and another complete', () => {
-  //
-  //   before(()=> {
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":false}]}');
-  //      add('Buy Milk', jsonTestFile);
-  //   });
-  //
-  //   //checking before and after of print txt file
-  //   it('should only print incomplete task', () => {
-  //       assert.equal(list(jsonTestFile), '2 Buy Milk\n\nYou have 1 task\n');
-  //   });
-  // })
+    });
+
+  describe('If one task is incomplete and another complete', function() {
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":false}]}', function(err){
+        if(err) throw err
+        add('Buy Milk', jsonTestFile, function(){
+          done()
+        });
+      });
+
+    });
+
+    //checking before and after of print txt file
+    it('should only print incomplete task', function(done){
+      list(jsonTestFile, function(err, data){
+        if(err) throw err
+        assert.equal(data, '2 Buy Milk\n\nYou have 1 task\n');
+        done()
+      });
+    });
+  })
 });
 //
 // describe('Tasks completed: ',() => {
