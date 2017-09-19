@@ -3,26 +3,28 @@ const fs = require('fs');
 const path = require('path');
 const {readAndParseData, writingToJsonFile} = require('../../taskStore.js')
 
-
-const ChangeIncompleteStatus = (jsonData, filePath, taskNumber) => {
-    const taskNumberIndex = (Number(taskNumber)-1);
-    const taskTitle = jsonData.tasks[taskNumberIndex].description;
-    const taskId = jsonData.tasks[taskNumberIndex].id
-    if(jsonData.tasks[taskNumberIndex] && jsonData.tasks[taskNumberIndex].incomplete){
-        jsonData.tasks[taskNumberIndex].incomplete = false;
-        writingToJsonFile(jsonData ,filePath)
-        process.stdout.write(`Completed task ${taskId}: '${taskTitle}'\n`);
-      } else {
-        if(filePath === path.resolve(__dirname, '../tasks.json')){
-          process.stdout.write(`Task ${taskId}: "${taskTitle}" already completed\n`);
-          }
-      }
-};
-
 //complete will change incomplete status if false;
-exports.complete = (taskNumber, filePath) => {
+exports.complete = (taskNumber, filePath, callback) => {
+  let terminalString = ''
   if(taskNumber){
-    readAndParseData(filePath, ChangeIncompleteStatus, taskNumber);
+    readAndParseData(filePath, function(err, data){
+      if(err) throw err
+      if(data.tasks[Number(taskNumber)-1] && data.tasks[Number(taskNumber)-1].incomplete){
+          data.tasks[Number(taskNumber)-1].incomplete = false;
+          terminalString += `Completed task ${data.tasks[Number(taskNumber)-1].id}: '${data.tasks[Number(taskNumber)-1].description}'\n`
+          process.stdout.write(`Completed task ${data.tasks[Number(taskNumber)-1].id}: '${data.tasks[Number(taskNumber)-1].description}'\n`);
+          writingToJsonFile(filePath, data, function(err){
+            if(err) throw err
+            callback(err, terminalString)
+          })
+        } else {
+          if(filePath === path.resolve(__dirname, '../tasks.json')){
+            terminalString += `Task ${data.tasks[Number(taskNumber)-1].id}: "${data.tasks[Number(taskNumber)-1].description}" already completed\n`
+            process.stdout.write(`Task ${data.tasks[Number(taskNumber)-1].id}: "${data.tasks[Number(taskNumber)-1].description}" already completed\n`);
+            }
+            callback(err, terminalString)
+        }
+    });
   } else {
     throw new Error('Must enter task number\n')
   }
