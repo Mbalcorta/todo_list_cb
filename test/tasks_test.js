@@ -89,63 +89,73 @@ describe('Add:',function(){
   });
 });
 
-// describe('list:',() => {
-//
-//   after(()=>{
-//     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//   });
-//
-//   describe('should return no list if no list in task list', () => {
-//     before(()=> {
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//     });
-//     //checking before and after of print txt file
-//     it('should print "You have 0 tasks" if no task', () => {
-//          assert.equal(list(jsonTestFile), '\nYou have 0 tasks\n');
-//     });
-//   });
-//
-//
-//   describe('should print out list of incomplete task to console if one item added', () => {
-//     before(()=> {
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//        add('Buy Milk', jsonTestFile);
-//     });
-//
-//     //checking before and after of print txt file
-//     it('If one task is added should return list of task id and description', () => {
-//          assert.equal(list(jsonTestFile), '1 Buy Milk\n\nYou have 1 task\n');
-//       });
-//   });
-//
-//   describe('should print out list of incomplete tasks to console if many items added', () => {
-//     before(()=> {
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//        add('Buy Milk', jsonTestFile);
-//        add('Take dogs on walk', jsonTestFile);
-//        add('Go for a bike ride', jsonTestFile);
-//        add('Take baby to beach', jsonTestFile);
-//     });
-//
-//     //checking before and after of print txt file
-//     it('If multiple tasks it should print to terminal list of id and description', () => {
-//          assert.equal(list(jsonTestFile), '1 Buy Milk\n2 Take dogs on walk\n3 Go for a bike ride\n4 Take baby to beach\n\nYou have 4 tasks\n');
-//       });
-//   });
-//
-//   describe('If one task is incomplete and another complete', () => {
-//
-//     before(()=> {
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":false}]}');
-//        add('Buy Milk', jsonTestFile);
-//     });
-//
-//     //checking before and after of print txt file
-//     it('should only print incomplete task', () => {
-//         assert.equal(list(jsonTestFile), '2 Buy Milk\n\nYou have 1 task\n');
-//     });
-//   })
-// });
+describe('list:',() => {
+
+  after(function(done){
+    fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+      if(err) throw err
+      done()
+    });
+  });
+
+  describe('should return no list if no list in task list', function(){
+    before((done)=> {
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        done()
+      });
+    });
+    //checking before and after of print txt file
+    it('should print "You have 0 tasks" if no task', (done) => {
+      list(jsonTestFile, function(err, data){
+        assert.equal(data, '\nYou have 0 tasks\n');
+        done()
+      })
+
+    });
+  });
+
+
+  // describe('should print out list of incomplete task to console if one item added', () => {
+  //   before(()=> {
+  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
+  //      add('Buy Milk', jsonTestFile);
+  //   });
+  //
+  //   //checking before and after of print txt file
+  //   it('If one task is added should return list of task id and description', () => {
+  //        assert.equal(list(jsonTestFile), '1 Buy Milk\n\nYou have 1 task\n');
+  //     });
+  // });
+  //
+  // describe('should print out list of incomplete tasks to console if many items added', () => {
+  //   before(()=> {
+  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
+  //      add('Buy Milk', jsonTestFile);
+  //      add('Take dogs on walk', jsonTestFile);
+  //      add('Go for a bike ride', jsonTestFile);
+  //      add('Take baby to beach', jsonTestFile);
+  //   });
+  //
+  //   //checking before and after of print txt file
+  //   it('If multiple tasks it should print to terminal list of id and description', () => {
+  //        assert.equal(list(jsonTestFile), '1 Buy Milk\n2 Take dogs on walk\n3 Go for a bike ride\n4 Take baby to beach\n\nYou have 4 tasks\n');
+  //     });
+  // });
+  //
+  // describe('If one task is incomplete and another complete', () => {
+  //
+  //   before(()=> {
+  //     fs.writeFileSync(jsonTestFile, '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":false}]}');
+  //      add('Buy Milk', jsonTestFile);
+  //   });
+  //
+  //   //checking before and after of print txt file
+  //   it('should only print incomplete task', () => {
+  //       assert.equal(list(jsonTestFile), '2 Buy Milk\n\nYou have 1 task\n');
+  //   });
+  // })
+});
 //
 // describe('Tasks completed: ',() => {
 //   describe('When task marked as completed', () => {
