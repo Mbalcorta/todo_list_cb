@@ -221,29 +221,46 @@ describe('Tasks completed: ',function(){
     });
   });
 });
-//
-//
-// describe('Tasks deleted: ',() => {
-//   describe('When task marked as deleted', () => {
-//     before(()=>{
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//       add('Buy Milk', jsonTestFile);
-//       add('Go for a walk', jsonTestFile);
-//       add('Build a fence', jsonTestFile);
-//     });
-//
-//     it("will print, Deleted tasks 1: 'Buy Milk'", () => {
-//       assert.equal(deleted(1, jsonTestFile), 'Deleted tasks 1: \'Buy Milk\'\n');
-//     });
-//   })
-//
-//   describe('When no tasks available', () => {
-//     before(()=>{
-//       fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-//     });
-//
-//     it("will print You have 0 tasks when no tasks available ", () => {
-//       assert.equal(deleted(1, jsonTestFile), 'You have 0 tasks\n');
-//     });
-//   })
-// });
+
+
+describe('Tasks deleted: ', function(){
+  describe('When task marked as deleted', function(){
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw Error
+          add('Buy Milk', jsonTestFile, function(){
+            add('Go for a walk', jsonTestFile, function(){
+              add('Build a fence', jsonTestFile, function(){
+                done()
+              });
+            });
+          });
+        });
+      });
+
+    it("will print, Deleted tasks 1: 'Buy Milk'", function(done){
+      deleted(1, jsonTestFile, function(err, data){
+        if(err) throw err
+        assert.equal(data, 'Deleted task 1: \'Buy Milk\'\n');
+        done()
+      });
+    });
+  });
+
+  describe('When no tasks available', function(){
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        done()
+      });
+    });
+
+    it("will print You have 0 tasks when no tasks available ", function(done){
+      deleted(1, jsonTestFile, function(err, data){
+        if(err) throw err
+        assert.equal(data, 'You have 0 tasks\n');
+        done()
+      });
+    });
+  });
+});
