@@ -132,21 +132,29 @@ describe('list:',() => {
         });
       });
   });
-  //
-  // describe('should print out list of incomplete tasks to console if many items added', () => {
-  //   before(()=> {
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}');
-  //      add('Buy Milk', jsonTestFile);
-  //      add('Take dogs on walk', jsonTestFile);
-  //      add('Go for a bike ride', jsonTestFile);
-  //      add('Take baby to beach', jsonTestFile);
-  //   });
-  //
-  //   //checking before and after of print txt file
-  //   it('If multiple tasks it should print to terminal list of id and description', () => {
-  //        assert.equal(list(jsonTestFile), '1 Buy Milk\n2 Take dogs on walk\n3 Go for a bike ride\n4 Take baby to beach\n\nYou have 4 tasks\n');
-  //     });
-  // });
+
+  describe('should print out list of incomplete tasks to console if many items added', function(){
+    before((done)=> {
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(){
+        add('Buy Milk', jsonTestFile, function(){
+          add('Take dogs on walk', jsonTestFile, function(){
+            add('Go for a bike ride', jsonTestFile, function(){
+              add('Take baby to beach', jsonTestFile, function(){
+                done()
+              });
+            });
+          });
+        });
+      });
+    });
+    //checking before and after of print txt file
+    it('If multiple tasks it should print to terminal list of id and description', function(done){
+      list(jsonTestFile, function(err, data){
+        assert.equal(data, '1 Buy Milk\n2 Take dogs on walk\n3 Go for a bike ride\n4 Take baby to beach\n\nYou have 4 tasks\n');
+        done()
+        })
+      });
+  });
   //
   // describe('If one task is incomplete and another complete', () => {
   //
