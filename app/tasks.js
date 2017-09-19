@@ -32,7 +32,7 @@ fs.stat(jsonPath, (err) => {
         break;
       case 'delete':
         try {
-          deleted(taskString, jsonPath);
+          deleted(taskString, jsonPath, function(){});
         } catch(e){
           process.stderr.write(e.message)
         }
