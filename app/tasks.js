@@ -18,9 +18,7 @@ fs.stat(jsonPath, (err) => {
     switch(firstArgument){
       case 'add':
         try {
-          add(taskString, jsonPath, function(){
-
-          });
+          add(taskString, jsonPath, function(){});
         } catch(e){
             process.stderr.write(e.message)
         }
@@ -40,7 +38,11 @@ fs.stat(jsonPath, (err) => {
         }
         break;
       case 'list':
-        list(jsonPath);
+        try {
+          list(jsonPath, function(){})
+          } catch(e) {
+          process.stderr.write(e.message)
+        }
         break;
       default:
         console.log('Error: not a correct command, please try again');
