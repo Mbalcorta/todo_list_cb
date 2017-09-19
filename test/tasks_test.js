@@ -13,15 +13,13 @@ describe('Add:',function(){
           if(err) throw err
           add('Buy Milk', jsonTestFile, function(){
           done()
-          })
+          });
         });
      });
 
     it('should contain json element', function(done) {
       fs.readFile(jsonTestFile, 'utf8', function(err, data){
-           if(err){
-             return err;
-             }
+           if(err) throw err
              assert.equal(data ,'{"tasks":[{"id":1,"description":"Buy Milk","incomplete":true}]}');
             done()
           });
@@ -41,15 +39,15 @@ describe('Add:',function(){
             });
           });
         });
-      })
+      });
     });
     it('should contain four tasks objects', function(done){
       fs.readFile(jsonTestFile, 'utf8', function(err, data) {
          assert.equal(JSON.parse(data).tasks.length, 4);
         done()
-        })
+      });
     });
-  })
+  });
 
   describe('When one task is added when passed as argument', function(){
     before(function(done){
@@ -58,14 +56,14 @@ describe('Add:',function(){
         add('Buy eggs', jsonTestFile, function(){
           done()
         });
-      })
-
-
+      });
     });
+
     it('it will create an object with a tasks array"', function(done){
         fs.readFile(jsonTestFile, 'utf8', function(err, data){
           if(err) throw err
-          assert.equal(JSON.parse(data), '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":true}]}');
+          assert.equal(data, '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":true}]}');
+          done()
         })
     });
   });
