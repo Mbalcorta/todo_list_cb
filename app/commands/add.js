@@ -5,7 +5,7 @@ const {readAndParseData, writingToJsonFile} = require('../../taskStore.js')
 
 exports.add = (taskString, filePath, callback) => {
   if(taskString){
-    readAndParseData(filePath, function(err, data){
+    readAndParseData(filePath, (err, data) => {
       data.tasks.push({id: data.tasks.length+1, description: taskString, incomplete: true})
       writingToJsonFile(filePath, data, function(err){
           if(err){
