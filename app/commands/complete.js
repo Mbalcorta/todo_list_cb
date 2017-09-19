@@ -7,20 +7,21 @@ const {readAndParseData, writingToJsonFile} = require('../../taskStore.js')
 exports.complete = (taskNumber, filePath, callback) => {
   let terminalString = ''
   if(taskNumber){
+    let indexPosition = Number(taskNumber)-1
     readAndParseData(filePath, function(err, data){
       if(err) throw err
-      if(data.tasks[Number(taskNumber)-1] && data.tasks[Number(taskNumber)-1].incomplete){
-          data.tasks[Number(taskNumber)-1].incomplete = false;
-          terminalString += `Completed task ${data.tasks[Number(taskNumber)-1].id}: '${data.tasks[Number(taskNumber)-1].description}'\n`
-          process.stdout.write(`Completed task ${data.tasks[Number(taskNumber)-1].id}: '${data.tasks[Number(taskNumber)-1].description}'\n`);
+      if(data.tasks[indexPosition] && data.tasks[indexPosition].incomplete){
+          data.tasks[indexPosition].incomplete = false;
+          terminalString += `Completed task ${data.tasks[indexPosition].id}: '${data.tasks[indexPosition].description}'\n`
+          process.stdout.write(`Completed task ${data.tasks[indexPosition].id}: '${data.tasks[indexPosition].description}'\n`);
           writingToJsonFile(filePath, data, function(err){
             if(err) throw err
             callback(err, terminalString)
           })
         } else {
-          if(filePath === path.resolve(__dirname, '../tasks.json') && data.tasks.lenght > 0){
-            terminalString += `Task ${data.tasks[Number(taskNumber)-1].id}: "${data.tasks[Number(taskNumber)-1].description}" already completed\n`
-            process.stdout.write(`Task ${data.tasks[Number(taskNumber)-1].id}: "${data.tasks[Number(taskNumber)-1].description}" already completed\n`);
+          if(filePath === path.resolve(__dirname, '../tasks.json') && data.tasks.length > 0){
+            terminalString += `Task ${data.tasks[indexPosition].id}: "${data.tasks[indexPosition].description}" already completed\n`
+            process.stdout.write(`Task ${data.tasks[indexPosition].id}: "${data.tasks[indexPosition].description}" already completed\n`);
           } else {
             terminalString += 'You have 0 tasks\n'
 
