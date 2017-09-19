@@ -18,7 +18,7 @@ describe('Add:',function(){
      });
 
     it('should contain json element', function(done) {
-      fs.readFile(jsonTestFile, 'utf8', (err, data) => {
+      fs.readFile(jsonTestFile, 'utf8', function(err, data){
            if(err){
              return err;
              }
@@ -28,7 +28,7 @@ describe('Add:',function(){
       });
   });
 
-  describe('When four tasks are added', ()=> {
+  describe('When four tasks are added', function(){
     before(function(done){
       fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
         if(err) throw err
@@ -43,24 +43,32 @@ describe('Add:',function(){
         });
       })
     });
-    it('should contain Walk dogs task as an object at the second index', function(done){
-      fs.readFile(jsonTestFile, 'utf8', (err, data) => {
-         assert.equal(JSON.parse(data).tasks[2].description, 'Walk dogs');
+    it('should contain four tasks objects', function(done){
+      fs.readFile(jsonTestFile, 'utf8', function(err, data) {
+         assert.equal(JSON.parse(data).tasks.length, 4);
         done()
         })
     });
   })
-  // describe('When one task is added when passed as argument', ()=> {
-  //    let fileContent;
-  //   before(()=>{
-  //     fs.writeFileSync(jsonTestFile, '{"tasks":[]}')
-  //     add('Buy eggs', jsonTestFile);
-  //     fileContent = fs.readFileSync(jsonTestFile, 'utf8')
-  //   });
-  //   it('it will create an object with a tasks array"', () => {
-  //      assert.equal(fileContent, '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":true}]}');
-  //   });
-  // });
+
+  describe('When one task is added when passed as argument', function(){
+    before(function(done){
+      fs.writeFile(jsonTestFile, '{"tasks":[]}', function(err){
+        if(err) throw err
+        add('Buy eggs', jsonTestFile, function(){
+          done()
+        });
+      })
+
+
+    });
+    it('it will create an object with a tasks array"', function(done){
+        fs.readFile(jsonTestFile, 'utf8', function(err, data){
+          if(err) throw err
+          assert.equal(JSON.parse(data), '{"tasks":[{"id":1,"description":"Buy eggs","incomplete":true}]}');
+        })
+    });
+  });
   // describe('When two tasks added terminal', ()=> {
   //    let jsonObject;
   //   before(()=>{
