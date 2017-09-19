@@ -1,20 +1,29 @@
 const fs = require('fs');
+const path = require('path');
 
-const readAndParseData = (jsonPath, callback, taskString) => {
+const jsonPath = path.resolve( __dirname,'test/test_json.json');
+const readAndParseData = (jsonPath, callback) => {
   fs.readFile(jsonPath, 'utf8', (err, data) => {
     if(err){
-      throw err
+      return callback(err)
     }
-    callback(JSON.parse(data), jsonPath, taskString)
-    // return JSON.parse(data);
+    callback(null, JSON.parse(data))
   });
 };
 
-const writingToJsonFile = ( modifiedTasksObject, filePath) => {
+readAndParseData(jsonPath, function(error, data){
+  if(error){
+    throw error
+  }
+})
+
+const writingToJsonFile = (filePath,  modifiedTasksObject, callback) => {
   const stringObject = JSON.stringify(modifiedTasksObject);
   fs.writeFile(filePath, stringObject, (err) => {
-    if(err) throw err
-    // return stringObject;
+    if(err) {
+      return callback(err)
+    }
+    callback(null)
   });
 };
 
